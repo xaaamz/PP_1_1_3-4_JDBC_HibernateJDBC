@@ -1,5 +1,15 @@
 package jm.task.core.jdbc.util;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+
 public class Util {
-    // реализуйте настройку соеденения с БД
+    public static Connection ConnectedUrl() throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/public";
+        String userName = "xamz";
+        String password = "root";
+        return DriverManager.getConnection(url, userName, password);
+    }
 }
