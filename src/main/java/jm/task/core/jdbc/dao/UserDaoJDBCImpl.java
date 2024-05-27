@@ -31,7 +31,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void dropUsersTable() {
         try (Statement statement = connection.createStatement()) {
-            String sqlDrop = "DROP TABLE users";
+            String sqlDrop = "DROP TABLE IF EXISTS users";
             statement.execute(sqlDrop);
             System.out.println("Таблица успешно удалена!");
         } catch (SQLException e) {
@@ -42,14 +42,12 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String userName, String lastName, byte age) {
-        try (Statement statement = connection.createStatement()) {
             String sqlSave = "INSERT INTO users (name,last_name, age) VALUES (?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlSave);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlSave)){
             preparedStatement.setString(1, userName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
             preparedStatement.execute();
-            System.out.println("Пользователь успешно добавлены в таблицу!");
         } catch (SQLException e) {
             System.out.println("Произошла ошибка при добовлении пользователя в таблицу!");
             e.printStackTrace();
@@ -60,6 +58,7 @@ public class UserDaoJDBCImpl implements UserDao {
         String sqlRemove = "DELETE FROM users WHERE id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlRemove)) {
             preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
             System.out.println("Пользователь по id успешно удален!");
         } catch (SQLException e) {
             System.out.println("Ошибка при удалении по id");
@@ -72,15 +71,14 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
         String sqlGet = "SELECT * FROM users";
-        try (Connection connection = Util.ConnectToUrl();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlGet);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlGet);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 User user = new User();
-                long id = resultSet.getLong(1);
-                String name = resultSet.getString(2);
-                String lastName = resultSet.getString(3);
-                byte age = resultSet.getByte(4);
+                long id = resultSet.getLong("id");
+                String name = resultSet.getString("name");
+                String lastName = resultSet.getString("last_name");
+                byte age = resultSet.getByte("age");
 
                 user.setId(id);
                 user.setName(name);
