@@ -13,44 +13,46 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
-    UserDaoJDBCImpl udji = new UserDaoJDBCImpl();
+    UserDao userDao = new UserDaoJDBCImpl();
+
+
 
     public void createUsersTable() {
-        udji.createUsersTable();
+        userDao.createUsersTable();
     }
 
     /**
      * Удалить таблицу Users
      */
     public void dropUsersTable() {
-        udji.dropUsersTable();
+        userDao.dropUsersTable();
     }
 
     /**
      * Сохранить в таблицу Users пользователя
      */
     public void saveUser(String name, String lastName, byte age) {
-            udji.saveUser(name, lastName, age);
+        userDao.saveUser(name, lastName, age);
     }
 
     /**
      * Удалить пользователя из таблицы по его ID
      */
     public void removeUserById(long id) {
-        udji.removeUserById(id);
+        userDao.removeUserById(id);
     }
 
     /**
      * Получить всех пользователей из таблицы Users
      */
     public List<User> getAllUsers() {
-        return udji.getAllUsers();
+        return userDao.getAllUsers();
     }
 
     /**
      * Очистить таблицу Users не удаляя её
      */
     public void cleanUsersTable() {
-        udji.cleanUsersTable();
+        userDao.cleanUsersTable();
     }
 }

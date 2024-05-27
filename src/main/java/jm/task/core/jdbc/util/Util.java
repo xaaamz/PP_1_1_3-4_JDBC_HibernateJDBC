@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 
 public class Util {
-    public static Connection ConnectedUrl() throws SQLException {
+    public static Connection ConnectToUrl() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/public";
         String userName = "xamz";
         String password = "root";
